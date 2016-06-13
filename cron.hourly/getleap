@@ -1,0 +1,12 @@
+#!/bin/sh
+DIR="/home/nginx/NoH/webpage/lib/leapinfo.php"
+URI="https://ntp.jre655.com/getDate/jsonp.php"
+DAT=`wget $URI -O-`
+LEAP=`echo "$DAT" | grep 'leap' | sed -e 's/"leap": //g' -e 's/ //g' -e 's/,//g'`
+NEXT=`echo "$DAT" | grep 'next' | sed -e 's/"next": //g' -e 's/ //g' -e 's/,//g'`
+STEP=`echo "$DAT" | grep 'step' | sed -e 's/"step": //g' -e 's/ //g'`
+echo '<?php
+        $leap = '$LEAP';
+        $next = '$NEXT';
+        $step = '$STEP';
+?>' > $DIR
